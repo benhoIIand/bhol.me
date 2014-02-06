@@ -1,1 +1,1 @@
-## Link shortener for my personal site
+## An attempt at making a URL shortener
