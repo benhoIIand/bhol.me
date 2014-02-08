@@ -6,7 +6,7 @@ class DbConnection {
 
 	public function __construct() {
 		// $this->link = new mysqli("localhost", "root", "", "shortener");
-		$this->link = new mysqli("localhost", "XXXXXXXX", "XXXXXXXX", "XXXXXXXX");
+		$this->link = new mysqli("localhost", "root", "jaffa123", "url_shortener");
 		if ($this->link->connect_errno) {
 			die("Failed to connect to MySQL: (" . $this->link->connect_errno . ") " . $this->link->connect_error);
 		}
