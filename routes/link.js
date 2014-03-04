@@ -8,7 +8,11 @@ module.exports = {
         }, function(err, results) {
             if(err) console.log(err);
 
-            res.redirect(results[0].url);
+            if(results[0]) {
+                res.redirect(results[0].url);
+            } else {
+                res.redirect('/');
+            }
         });
     },
 
