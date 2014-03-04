@@ -16,13 +16,13 @@ app.configure(function() {
     app.use(app.router);
 });
 
-// Aliases
+// Default
+app.get('/', index);
+
+// Links
 app.get('/links', link.getAll);
 app.get('/:id', link.get);
 app.post('/link', link.create);
-
-// Default
-app.get('/', index);
 
 
 app.listen(app.get('port'), function(){
