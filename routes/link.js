@@ -16,14 +16,25 @@ module.exports = {
     redirect: function(req, res) {
         Link.find({
             hash: req.params.id
-        }, function(err, results) {
+        }, function(err, result) {
             if(err) console.log(err);
 
-            if(results[0]) {
-                res.redirect(results[0].url);
+            if(result[0]) {
+                result = result[0];
             } else {
                 res.redirect('/');
+                return false;
             }
+
+            Link.update({
+                _id: result._id
+            }, {
+                views: (result.views + 1)
+            }, function(err) {
+                if(err) console.log(err);
+            });
+
+            res.redirect(result.url);
         });
     },
 
