@@ -21,7 +21,8 @@ app.get('/', index);
 
 // Links
 app.get('/links', link.getAll);
-app.get('/:id', link.get);
+app.get('/:id', link.redirect);
+app.get('/link/:id', link.get);
 app.post('/link', link.create);
 
 

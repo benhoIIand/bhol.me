@@ -1,8 +1,19 @@
 var Link = require('../models/link');
 
+var generateId = function(len) {
+    var text = '';
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for(var i=0; i < (len || 8); i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return text;
+};
+
 module.exports = {
 
-    get: function(req, res) {
+    redirect: function(req, res) {
         Link.find({
             hash: req.params.id
         }, function(err, results) {
@@ -16,10 +27,20 @@ module.exports = {
         });
     },
 
+    get: function(req, res) {
+        Link.find({
+            hash: req.params.id
+        }, function(err, results) {
+            if(err) console.log(err);
+
+            res.json(results);
+        });
+    },
+
     getAll: function(req, res) {
         var q      = req.query,
-            sort   = q.sort   ? q.sort.toLowerCase()   : 'name',
-            order  = q.order  ? q.order.toLowerCase()  : '1',
+            sort   = q.sort   ? q.sort.toLowerCase()   : 'created',
+            order  = q.order  ? q.order.toLowerCase()  : '-1',
             fields = q.fields ? q.fields.toLowerCase() : '';
 
         order = order === 'asc' ? 1 : (order === 'desc' ? -1 : order);
@@ -42,12 +63,21 @@ module.exports = {
         try {
             if(req.body instanceof Array) {
                 req.body.forEach(function(entry) {
-                    new Link(entry).save(function() {
+                    entry.hash = generateId();
+
+                    new Link(entry).save(function(err) {
+                        if(err) console.log(err);
+
                         res.json('success');
                     });
                 });
             } else {
-                new Link(req.body).save(function() {
+                req.body.hash = generateId();
+
+                new Link(req.body).save(function(err) {
+                    if(err) console.log(err);
+
+                    console.log('fajnwfnawjfjw');
                     res.json('success');
                 });
             }
