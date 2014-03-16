@@ -387,11 +387,11 @@ h2 {
   font-size: 1.4rem;
 }
 a {
-  color: #333;
-  text-decoration: none;
-}
-a:hover {
+  color: #38605E;
   text-decoration: underline;
+}
+a:visited {
+  color: #508B88;
 }
 .btn {
   position: relative;
