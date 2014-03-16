@@ -1,37 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset='UTF-8'>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>bhol.me</title>
-        <link rel="stylesheet" href="/css/main.css">
-	</head>
-	<body>
+extends ../layout
 
-        <div class="container">
-            <h1>Link Shortener</h1>
+block content
 
-            <div class="create-link">
-                <input type="text" id="url" class="input" placeholder="Paste link">
-                <button id="create_link" class="btn btn--action">Shorten</button>
-            </div>
+    h1 Link Shortener
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Hash</th>
-                        <th>Redirect</th>
-                        <th>Views</th>
-                        <th>Created</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+    div.create-link
+        input#url.input(type='text', placeholder='Paste link')
+        button#create_link.btn.btn--action Shorten
 
-        </div>
-		
-        <script>
+    table
+        thead
+            tr
+              th Hash
+              th Redirect
+              th Views
+              th Created
+          tbody
 
+    script(type='text/javascript').
         (function() {
             var results = [];
 
@@ -105,8 +91,3 @@
             refresh();
 
         })();
-
-        </script>
-
-	</body>
-</html>

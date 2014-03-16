@@ -10,7 +10,11 @@ mongoose.connect('mongodb://localhost/url_shortener');
 app.configure(function() {
     app.set('port', parseInt(process.env.PORT, 10) || 3000);
     app.set('views', __dirname + '/app/views');
-    app.engine('html', require('ejs').renderFile);
+    app.set('view engine', 'jade');
+    app.set('view options', {
+        pretty: true,
+        layout: false
+    });
 
     app.use(express.methodOverride());
     app.use(express.bodyParser());
@@ -26,6 +30,7 @@ app.configure(function() {
 // Default
 app.get('/', page.index);
 app.get('/dashboard', page.dashboard);
+app.get('/about', page.about);
 
 // Links
 app.get('/links', link.getAll);
