@@ -14,6 +14,9 @@ module.exports = function(grunt) {
                 src: 'Gruntfile.js'
             }
         },
+        less: {
+            'app/css/main.css': 'app/less/_build.less'
+        },
         watch: {
             gruntfile: {
                 files: '<%= jshint.gruntfile.src %>',
@@ -21,6 +24,10 @@ module.exports = function(grunt) {
             },
             server: {
                 files: ['routes/*.js']
+            },
+            less: {
+                files: 'app/less/*.less',
+                tasks: ['less']
             }
         },
         nodemon: {

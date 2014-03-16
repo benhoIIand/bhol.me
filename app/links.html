@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset='UTF-8'>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>bhol.me</title>
+        <link rel="stylesheet" href="/css/main.css">
+	</head>
+	<body>
+
+        <div class="container">
+            <h1>Link Shortener</h1>
+
+            <div class="create-link">
+                <input type="text" id="url" class="input" placeholder="Paste link">
+                <button id="create_link" class="btn btn--action">Shorten</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hash</th>
+                        <th>Redirect</th>
+                        <th>Views</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+		
+        <script>
+
+        (function() {
+            var results = [];
+
+            function formatDate(date) {
+                var d = new Date(date);
+                return ('0'+d.getDate()).substr(-2) +'/'+ (d.getMonth()+1) +'/'+ d.getFullYear();
+            };
+
+            function getLinks(cb) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/links', true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            cb(JSON.parse(xhr.responseText));
+                        }
+                    }
+                };
+                xhr.send(null);
+            }
+
+            function createLink(cb) {
+                var http = new XMLHttpRequest();
+                var params = 'url='+ document.querySelector('#url').value;
+
+                http.open('POST', '/link', true);
+
+                //Send the proper header information along with the request
+                http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                http.setRequestHeader('Content-length', params.length);
+                http.setRequestHeader('Connection', 'close');
+
+                http.onreadystatechange = function() {
+                    if(http.readyState == 4 && http.status == 200) {
+                        cb(http.responseText);
+                    }
+                }
+                http.send(params);
+            }
+
+            function renderList(sort) {
+                var html = '';
+
+                results.sort(function(a, b) {
+                    return a[sort] > b[sort];
+                }).forEach(function(link) {
+                    html += '\
+                    <tr>\
+                        <td><a href="/'+ link.hash +'">'+ link.hash +'</a></td>\
+                        <td><a href="'+ link.url +'">'+ link.url +'</a></td>\
+                        <td>'+ link.views +'</td>\
+                        <td>'+ formatDate(link.created) +'</td>\
+                    </tr>\
+                    ';
+                });
+
+                document.querySelector('tbody').innerHTML = html;
+            }
+
+            var refresh = function() {
+                getLinks(function(res) {
+                    results = res;
+                    renderList();
+                });
+            };
+
+            document.querySelector('#create_link').addEventListener('click', function() {
+                createLink(refresh);
+            });
+
+            refresh();
+
+        })();
+
+        </script>
+
+	</body>
+</html>
