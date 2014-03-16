@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://localhost/url_shortener');
-
 var linkSchema = new Schema({
     hash: {
         type: String,

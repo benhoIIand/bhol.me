@@ -1,11 +1,17 @@
-var express = require('express'),
-    link    = require('./routes/link'),
-    index   = require('./routes/index');
+var express  = require('express'),
+    mongoose = require('mongoose'),
+    link     = require('./routes/link'),
+    page     = require('./routes/page');
 
 var app = express();
 
+mongoose.connect('mongodb://localhost/url_shortener');
+
 app.configure(function() {
     app.set('port', parseInt(process.env.PORT, 10) || 3000);
+    app.set('views', __dirname + '/app/views');
+    app.engine('html', require('ejs').renderFile);
+
     app.use(express.methodOverride());
     app.use(express.bodyParser());
     app.use(express.static(__dirname + '/app'));
@@ -13,11 +19,13 @@ app.configure(function() {
         dumpExceptions: true,
         showStack: true
     }));
+
     app.use(app.router);
 });
 
 // Default
-app.get('/', index);
+app.get('/', page.index);
+app.get('/dashboard', page.dashboard);
 
 // Links
 app.get('/links', link.getAll);

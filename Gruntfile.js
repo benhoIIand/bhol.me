@@ -22,9 +22,6 @@ module.exports = function(grunt) {
                 files: '<%= jshint.gruntfile.src %>',
                 tasks: ['jshint:gruntfile']
             },
-            server: {
-                files: ['routes/*.js']
-            },
             less: {
                 files: 'app/less/*.less',
                 tasks: ['less']
@@ -32,7 +29,10 @@ module.exports = function(grunt) {
         },
         nodemon: {
             dev: {
-                script: 'server.js'
+                script: ['server.js'],
+                options: {
+                    watch: ['server.js', 'routes/*.js']
+                }
             }
         },
         concurrent: {
